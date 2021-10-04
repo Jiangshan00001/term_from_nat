@@ -1,11 +1,12 @@
 # term_from_nat
-connect a terminal inside a nat. used when you want somebody to help you, but he could not connect to your linux because your computer is inside a nat.
+connect a terminal inside a nat. 
+used when you want somebody to help you, but he could not connect to your linux because your computer is inside a nat.
 
 it is somehow like the ssh, the different is that:
 
-the ssh is: client connect to server. do something in the server computer.
+the **ssh** is: client connect to server. **do something in the server computer.**
 
-this program is: client connect to server. do something in the client computer.
+this **term_from_nat** is: client connect to server. **do something in the client computer.**
 
 
 used when:
