@@ -10,19 +10,23 @@ import fcntl
 import struct
 import sys
 import time
+import termios
+from pkt_common import get_payload, gen_pkt
+import random
 
 g_old_settings = None
 g_is_exit = 0
+g_tk = str(random.randrange(100000, 999999, 1))
 
 
-def get_win_size(self, s, frame):
-    packed = fcntl.ioctl(self.stdout.fileno(), termios.TIOCGWINSZ, struct.pack('HHHH', 0, 0, 0, 0))
-    rows, cols, h_pixels, v_pixels = struct.unpack('HHHH', packed)
-    if rows < 10:
-        rows = 10
-    if cols < 10:
-        cols = 10
-    return rows, cols
+# def get_win_size(self, s, frame):
+#    packed = fcntl.ioctl(self.stdout.fileno(), termios.TIOCGWINSZ, struct.pack('HHHH', 0, 0, 0, 0))
+#    rows, cols, h_pixels, v_pixels = struct.unpack('HHHH', packed)
+#    if rows < 10:
+##        rows = 10
+#   if cols < 10:
+#        cols = 10
+#    return rows, cols
 
 
 def tty_to_raw():
@@ -50,9 +54,8 @@ def read_local_and_send_to_remote(client):
         while 1:
             # command = input()
             command = os.read(fd, 32)
-            icmd = command
             # for icmd in command:
-            client.send(icmd)
+            client.send(gen_pkt(command.decode('utf-8'), g_tk))
 
     except Exception as e:
         print('[-] Caught exception: ' + str(e))
@@ -73,9 +76,11 @@ def recv_remote_and_display_to_local(client):
         try:
             reta = select.select([client.fileno()], [], [client.fileno()], 0.5)
             if reta[0]:
-                output = os.read(client.fileno(), 1024)
-                sys.stdout.write(output.decode('utf-8'))
-                sys.stdout.flush()
+                output = os.read(client.fileno(), 8192)
+                output = get_payload(output, g_tk)
+                if len(output)>0:
+                    sys.stdout.write(output)
+                    sys.stdout.flush()
             elif reta[2]:
                 print('exit: recv_remote_and_display_to_local-2')
                 sys.exit(0)

