@@ -1,0 +1,3 @@
+[console_scripts]
+term_from_nat = term_from_nat.term_from_nat:main
+

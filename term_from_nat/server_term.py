@@ -12,12 +12,12 @@ import struct
 import sys
 import time
 import termios
-from pkt_common import get_payload2, gen_pkt2
-from mqtt_common import start_mqtt_connection
 import random
+from .pkt_common import get_payload2, gen_pkt2
+from .mqtt_common import start_mqtt_connection
+
 
 g_old_settings = None
-g_is_exit=0
 
 def tty_to_raw():
     fd = sys.stdin.fileno()
@@ -48,6 +48,7 @@ class ServerTerm:
         self.pty_name = None
         self.topic_from_server = ''
         self.topic_from_client = ''
+        self.is_exit=0
 
     def set_token(self, token):
         self.token = token
@@ -58,10 +59,12 @@ class ServerTerm:
         self.bridge_topic_prefix = bridge_topic_prefix
 
     def local_data_to_remote(self):
-        global g_is_exit
         try:
             fd = sys.stdin.fileno()
             while 1:
+                if self.is_exit:
+                    break
+
                 command = os.read(fd, 32)
                 self.client.publish(self.topic_from_server, gen_pkt2(command, self.token))
 
@@ -82,9 +85,8 @@ class ServerTerm:
             sys.stdout.flush()
 
         if output==b'exited':
-            global g_is_exit
             self.client.disconnect()
-            g_is_exit=1
+            self.is_exit=1
 
     def on_connect(self, client, userdata, flags, rc):
         self.client.subscribe(self.topic_from_client)

@@ -11,8 +11,8 @@ import os
 import random
 import paho.mqtt.client as mqtt
 
-from pkt_common import get_payload2, gen_pkt2
-from mqtt_common import start_mqtt_connection
+from .pkt_common import get_payload2, gen_pkt2
+from .mqtt_common import start_mqtt_connection
 
 
 class ClientTerm:

@@ -23,6 +23,30 @@ used when:
 how to use:
 -----------------------------
 ```
+COMPUTER1(one nat):
+1. pip install term_from_nat
+2. python3 -m term_from_nat  or just type: term_from_nat
+will show some tips:
+client started, use: 
+python3 -m term_from_nat -s -t  378885 
+ to start the server
+ 
+COMPUTER2(another nat):
+1. pip install term_from_nat
+2. python3 -m term_from_nat -s -t  378885   
+     or just: term_from_nat -s -t  378885
+
+that's all.
+
+```
+
+
+
+
+```
+another usage:
+normal usage uses a bridge to connect each-other.
+if you have a public ip server, then, you could run this, connect each other without bridge.
 1 COMPUTER1: run python3 server_lite.py  {server_port} on one computer that has a public ip.
 2 COMPUTER2: run python3 client_lite.py {server_ip} {server_port} on the computer that inside a nat
 3 COMPUTER1: type you command.

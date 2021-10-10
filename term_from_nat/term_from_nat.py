@@ -1,9 +1,13 @@
+#!/usr/bin/env python
+#coding:utf-8
+
 import sys, getopt
 import random
-from server_term import ServerTerm
-from client_term import ClientTerm
+from .server_term import ServerTerm
+from .client_term import ClientTerm
 
-if __name__ == '__main__':
+
+def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hst:b:p:f:", ['help', 'server', 'token', 'bridge', 'port', 'prefix'])
     except getopt.GetoptError:
@@ -48,3 +52,7 @@ if __name__ == '__main__':
             print('client started, use: term_from_nat -s -t  ' + token + ' -b ' + server + ' -p ' + str(
                 port) + '\n to start the server')
         client.start_server()
+
+
+if __name__ == '__main__':
+    main()
