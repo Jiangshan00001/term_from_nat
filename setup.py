@@ -7,7 +7,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 	
 setuptools.setup(
     name="term_from_nat",
-    version="0.1.5",
+    version="0.1.6",
     author="jiangshan00000",
     author_email="710806594@qq.com",
     description="A remote term connect from one nat to another nat",

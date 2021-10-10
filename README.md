@@ -44,7 +44,7 @@ that's all.
 
 
 ```
-another usage:
+old/deprecated usage:
 normal usage uses a bridge to connect each-other.
 if you have a public ip server, then, you could run this, connect each other without bridge.
 1 COMPUTER1: run python3 server_lite.py  {server_port} on one computer that has a public ip.
