@@ -25,7 +25,7 @@ def main():
                 '\t-s i am a server, connect to a client(no new session),\n'
                 '\t-t token, this is optional for client, must be set for server.\n'
                 '\t-b bridge(default is test.mosquitto.org). \n'
-                '\t-p port(default is 1883). -f topic prefix(default \'\') \n')
+                '\t-p port(default is 1883). \n\t-f topic prefix(default \'\') \n')
             sys.exit()
         elif opt in ("-s", "--server"):
             join_a_client = True
@@ -50,11 +50,11 @@ def main():
         client.set_token(token)
         client.set_bridge(server, port, prefix)
         if len(prefix) > 0:
-            print('client started, USE: \nterm_from_nat -s -t  ' + token + ' -b ' + server + ' -p ' + str(
-                port) + ' -f ' + prefix + '\n TO START THE SERVER from another computer')
+            print('client started, USE: \n\033[0;32;32mterm_from_nat -s -t  ' + token + ' -b ' + server + ' -p ' + str(
+                port) + ' -f ' + prefix + '\033[m\n TO START THE SERVER from another computer')
         else:
-            print('client started, USE: \nterm_from_nat -s -t  ' + token + ' -b ' + server + ' -p ' + str(
-                port) + '\n TO START THE SERVER from another computer')
+            print('client started, USE: \n\033[0;32;32mterm_from_nat -s -t  ' + token + ' -b ' + server + ' -p ' + str(
+                port) + '\033[m\n TO START THE SERVER from another computer')
         client.start_server()
 
 
