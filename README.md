@@ -51,14 +51,14 @@ TBD:
 
 
 
-```
+
 old/deprecated usage:
 normal usage uses a bridge to connect each-other.
 if you have a public ip server, then, you could run this, connect each other without bridge.
-1 COMPUTER1: run python3 server_lite.py  {server_port} on one computer that has a public ip.
-2 COMPUTER2: run python3 client_lite.py {server_ip} {server_port} on the computer that inside a nat
-3 COMPUTER1: type you command.
-```
+1. COMPUTER1: run python3 server_lite.py  {server_port} on one computer that has a public ip.
+2. COMPUTER2: run python3 client_lite.py {server_ip} {server_port} on the computer that inside a nat
+3. COMPUTER1: type you command.
+
 
 
 
