@@ -51,3 +51,18 @@ if you have a public ip server, then, you could run this, connect each other wit
 2 COMPUTER2: run python3 client_lite.py {server_ip} {server_port} on the computer that inside a nat
 3 COMPUTER1: type you command.
 ```
+
+
+TBD:
+1. windows support. currently only linux is supported as python pty package limit.
+2. pty resize support. currently it uses the default pty columns x rows and not do a resize.
+3. one stable mqtt broke.
+4. mqtt auth support.
+
+
+
+
+
+
+
+
